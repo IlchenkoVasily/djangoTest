@@ -7,12 +7,14 @@ from .models import Book, Author, BookInstance, Genre
 
 #def hello(request)
 #    return HttpResponse("Hello world")
+
 from django.views import generic
+
 class BookListView(generic.ListView):
     model = Book
-
-     def get_queryset(self):
-        return Book.objects.filter(title__icontains='war')[:5] # Получить 5 книг, содержащих 'war' в заголовке
+    paginate_by = 10
+    #def get_queryset(self):
+    #    return Book.objects.filter(title__icontains='war')[:5] # Получить 5 книг, содержащих 'war' в заголовке
 
     def get_context_data(self, **kwargs):
         # В первую очередь получаем базовую реализацию контекста
@@ -20,6 +22,9 @@ class BookListView(generic.ListView):
         # Добавляем новую переменную к контексту и иниуиализируем ее некоторым значением
         context['some_data'] = 'This is just some data'
         return context
+
+class BookDetailView(generic.DetailView):
+    model = Book
 
 def index(request):
     """
